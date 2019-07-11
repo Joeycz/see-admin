@@ -1,0 +1,19 @@
+{
+  "name": "see-admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joeycz/see-admin.git"
+  },
+  "author": "chengzheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joeycz/see-admin/issues"
+  },
+  "homepage": "https://github.com/Joeycz/see-admin#readme"
+}
