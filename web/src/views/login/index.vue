@@ -59,6 +59,8 @@ export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
+      console.log(value)
+      console.log(validUsername(value))
       if (!validUsername(value)) {
         callback(new Error('Please enter the correct user name'))
       } else {
@@ -74,8 +76,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
