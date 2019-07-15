@@ -10,6 +10,7 @@ const state = {
 
 const mutations = {
   SET_TOKEN: (state, token) => {
+    console.log(token)
     state.token = token
   },
   SET_NAME: (state, name) => {
@@ -28,8 +29,10 @@ const actions = {
       console.log(1111)
       login({ email: username.trim(), password: password }).then(response => {
         console.log(response)
-        const { token } = response
+        const { token, user } = response
         commit('SET_TOKEN', token)
+        commit('SET_NAME', user.name)
+        commit('SET_AVATAR', user.avatar || '')
         setToken(token)
         resolve()
       }).catch(error => {
@@ -43,7 +46,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
+        const data = response
 
         if (!data) {
           reject('Verification failed, please Login again.')
