@@ -55,6 +55,26 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: '/xxgg',
+    component: Layout,
+    redirect: '/xxgg/growth',
+    name: 'Growth',
+    meta: { title: '小小格哥', icon: 'example' },
+    children: [{
+      path: 'growth',
+      name: 'Growth',
+      component: () => import('@/views/xxgg/index'),
+      meta: { title: '成长', icon: 'baby-bottle' }
+    }, {
+      path: 'edit',
+      name: 'GrowthEdit',
+      component: () => import('@/views/xxgg/edit'),
+      hidden: true,
+      meta: { title: '编辑', icon: 'baby-bottle' }
+    }]
+  },
+
   // {
   //   path: '/example',
   //   component: Layout,
