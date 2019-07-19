@@ -29,10 +29,8 @@ const actions = {
       console.log(1111)
       login({ email: username.trim(), password: password }).then(response => {
         console.log(response)
-        const { token, user } = response
+        const { token } = response
         commit('SET_TOKEN', token)
-        commit('SET_NAME', user.name)
-        commit('SET_AVATAR', user.avatar || '')
         setToken(token)
         resolve()
       }).catch(error => {
