@@ -9,6 +9,38 @@
         <el-form-item label="身高(CM)">
           <el-input-number :min="50" v-model="form.height"></el-input-number>
         </el-form-item>
+        <el-form-item label="日期">
+          <el-date-picker
+            v-model="form.date"
+            type="datetime"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="想对小小格哥说">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 6}"
+            placeholder="对小小格哥说点什么呢。。。"
+            v-model="form.msg">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="拍一张">
+          <el-upload
+            class="upload-demo"
+            :headers="uploadImage.headers"
+            drag
+            :show-file-list="false"
+            :on-progress="progressUpload"
+            :on-success="successUpload"
+            action="https://api.daqiongzi.com/common/github/upload">
+            <i class="el-icon-upload"></i>
+            <div v-if="!progress" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div v-else style="padding: 0 20px;">
+              <el-progress :percentage="progress"></el-progress>
+            </div>
+          </el-upload>
+          <div class="photo-box" v-if="form.photo" :style="{backgroundImage: `url(${form.photo})`}"></div>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">长大啦</el-button>
           <el-button @click="goBack">取消</el-button>
@@ -21,6 +53,7 @@
 <script>
 import { updateData } from '@/api/xxgg'
 import moment from 'moment'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'GrowthEdit',
@@ -28,9 +61,16 @@ export default {
     return {
       form: {
         weight: '',
-        height: ''
+        height: '',
+        date: null,
+        msg: '',
+        photo: ''
       },
-      today: ''
+      today: '',
+      uploadImage: {
+        headers: {}
+      },
+      progress: 0
     }
   },
   mounted() {
@@ -39,6 +79,12 @@ export default {
     this.today = Today.getFullYear() + " 年 " + (Today.getMonth()+1) + " 月 " + Today.getDate() + " 日"
     this.form.weight = this.$route.query.w
     this.form.height = this.$route.query.h
+    this.form.date = new Date()
+    this.uploadImage = {
+      headers: {
+        Authorization: getToken()
+      }
+    }
   },
   methods: {
     onSubmit() {
@@ -60,6 +106,15 @@ export default {
     },
     goBack() {
       this.$router.push('/xxgg/growth')
+    },
+    progressUpload (e) {
+      console.log(e)
+      this.progress = e.percent
+    },
+    successUpload (res) {
+      console.log(res)
+      this.form.photo = res.data.content.download_url
+      this.progress = 0
     }
   }
 }
@@ -69,6 +124,13 @@ export default {
 .xxgg-growth-edit {
   &-container {
     margin: 30px;
+    .photo-box {
+      width: 200px;
+      height: 200px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
   }
 }
 </style>

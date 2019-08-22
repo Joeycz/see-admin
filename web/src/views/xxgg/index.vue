@@ -9,9 +9,17 @@
         <div id="chart"></div>
         <el-table
           :data="data"
+          height="600"
+          border
+          stripe
           style="width: 100%">
           <el-table-column
+            type="index"
+            width="50">
+          </el-table-column>
+          <el-table-column
             prop="date"
+            sortable
             label="日期">
           </el-table-column>
           <el-table-column
@@ -22,18 +30,24 @@
             prop="height"
             label="身高(CM)">
           </el-table-column>
-          <!-- <el-table-column
-            prop="desc"
-            label="留言">
+          <el-table-column
+            prop="msg"
+            label="对小小格哥说的">
           </el-table-column>
           <el-table-column
-            prop="pic"
-            label="照片"> -->
+            prop="photo"
+            label="照片">
+            <template slot-scope="scope">
+              <div @click="viewPhoto(scope.row.photo)" v-if="scope.row.photo" class="image-square" :style="{backgroundImage: `url(${scope.row.photo})`}"></div>
+            </template>
           </el-table-column>
         </el-table>
       </div>
       
     </el-card>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
   </div>
 </template>
 
@@ -41,13 +55,17 @@
 import { getData } from '@/api/xxgg'
 import echarts from 'echarts'
 import moment from 'moment'
+import cloneDeep from 'lodash.clonedeep'
 
 export default {
   name: 'Growth',
   data() {
     return {
       data: [],
-      dayFromBirth: 0
+      dayFromBirth: 0,
+      chartData: [],
+      dialogVisible: false,
+      dialogImageUrl: ''
     }
   },
   mounted() {
@@ -58,7 +76,12 @@ export default {
     getData() {
       getData().then((res) => {
         console.log(res)
-        this.data = res.data.data
+        this.data = res.data.data.sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
+        })
+        this.chartData = cloneDeep(this.data).sort((a, b) => {
+          return new Date(a.date).getTime() - new Date(b.date).getTime()
+        })
         this.drawChart()
       })
     },
@@ -72,20 +95,20 @@ export default {
         // },
         tooltip: {},
         xAxis: {
-          data: this.data.map((item) => item.date)
+          data: this.chartData.map((item) => item.date)
         },
         yAxis: {},
         series: [{
           name: '体重(KG)',
           type: 'bar',
-          data: this.data.map((item) => item.weight)
+          data: this.chartData.map((item) => item.weight)
         }]
       });
     },
     gotoEdit() {
       this.$router.push({ path: '/xxgg/edit', query: {
-        w: this.data[this.data.length - 1].weight,
-        h: this.data[this.data.length - 1].height
+        w: this.data[0].weight,
+        h: this.data[0].height
       }})
     },
     fromNow() {
@@ -98,6 +121,10 @@ export default {
       const startWithoutMonths = start.add(months, 'months')
       const days = end.diff(startWithoutMonths, 'days')
       return `${years} 岁 ${months} 个月零 ${days} 天`
+    },
+    viewPhoto (p) {
+      this.dialogVisible = true
+      this.dialogImageUrl = p
     }
   }
 }
@@ -107,6 +134,16 @@ export default {
 .xxgg-growth {
   &-container {
     margin: 30px;
+    .image-square {
+      width: 100px;
+      height: 100px;
+      border-radius: 4px;
+      overflow: hidden;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      cursor: pointer;
+    }
   }
 }
 #chart {
