@@ -1,6 +1,6 @@
 <template>
   <div class="xxgg-growth-container">
-    <h3>小小格哥 {{fromNow()}} 啦🚀🚀🚀（{{dayFromBirth}}天）</h3>
+    <h4>小小格哥<br /> {{fromNow()}} 啦🚀🚀🚀（{{dayFromBirth}}天）</h4>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <el-button style="float: right;" type="primary" @click="gotoEdit">小小格哥又长了，快去更新</el-button>
@@ -20,22 +20,27 @@
           <el-table-column
             prop="date"
             sortable
+            min-width="100"
             label="日期">
           </el-table-column>
           <el-table-column
             prop="weight"
+            min-width="100"
             label="体重(KG)">
           </el-table-column>
           <el-table-column
             prop="height"
+            min-width="100"
             label="身高(CM)">
           </el-table-column>
           <el-table-column
             prop="msg"
+            min-width="220"
             label="对小小格哥说的">
           </el-table-column>
           <el-table-column
             prop="photo"
+            min-width="220"
             label="照片">
             <template slot-scope="scope">
               <div @click="viewPhoto(scope.row.photo)" v-if="scope.row.photo" class="image-square" :style="{backgroundImage: `url(${scope.row.photo})`}"></div>
@@ -45,7 +50,11 @@
       </div>
       
     </el-card>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog
+      width="80%"
+      fullscreen
+      custom-class="pic-dialog-box"
+      :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
   </div>
@@ -93,6 +102,10 @@ export default {
         // title: {
         //     text: 'ECharts 入门示例'
         // },
+        grid: {
+          y: 5,
+          x2: 5
+        },
         tooltip: {},
         xAxis: {
           data: this.chartData.map((item) => item.date)
@@ -101,7 +114,10 @@ export default {
         series: [{
           name: '体重(KG)',
           type: 'bar',
-          data: this.chartData.map((item) => item.weight)
+          data: this.chartData.map((item) => item.weight),
+          itemStyle: {
+            color: '#ebbb39'
+          }
         }]
       });
     },
@@ -120,7 +136,11 @@ export default {
       const months = end.diff(startWithoutYear, 'months')
       const startWithoutMonths = start.add(months, 'months')
       const days = end.diff(startWithoutMonths, 'days')
-      return `${years} 岁 ${months} 个月零 ${days} 天`
+      if (years > 0) {
+        return `${years} 岁 ${months} 个月零 ${days} 天`
+      } else {
+        return `${months} 个月零 ${days} 天`
+      }
     },
     viewPhoto (p) {
       this.dialogVisible = true
@@ -134,9 +154,13 @@ export default {
 .xxgg-growth {
   &-container {
     margin: 30px;
+    h4 {
+      line-height: 1.4;
+      color: #333333;
+    }
     .image-square {
-      width: 100px;
-      height: 100px;
+      width: 200px;
+      height: 200px;
       border-radius: 4px;
       overflow: hidden;
       background-repeat: no-repeat;
@@ -149,5 +173,30 @@ export default {
 #chart {
   width: 100%;
   height: 400px;
+}
+@media screen and (max-width: 545px) {
+  .xxgg-growth {
+    &-container {
+      margin: 0px;
+      h4 {
+        padding: 0 10px;
+      }
+      /deep/ .el-dialog__wrapper {
+        .pic-dialog-box {
+          display: flex;
+          align-items: center;
+          /deep/ .el-dialog__header {
+            padding: 0;
+          }
+          /deep/ .el-dialog__body {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+  #chart {
+    height: 200px;
+  }
 }
 </style>

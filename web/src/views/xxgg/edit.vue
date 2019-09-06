@@ -1,24 +1,28 @@
 <template>
   <div class="xxgg-growth-edit-container">
-    <h3>今天是 {{today}}</h3>
+    <div class="header">
+      <h4>今天是 {{today}}</h4>
+    </div>
     <el-card class="box-card">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="体重(KG)">
-          <el-input-number :min="3.24" :step="0.01" v-model="form.weight"></el-input-number>
+          <el-input-number style="width: 100%; max-width: 360px;" :min="3.24" :step="0.1" v-model="form.weight"></el-input-number>
         </el-form-item>
         <el-form-item label="身高(CM)">
-          <el-input-number :min="50" v-model="form.height"></el-input-number>
+          <el-input-number style="width: 100%; max-width: 360px;" :min="50" v-model="form.height"></el-input-number>
         </el-form-item>
         <el-form-item label="日期">
           <el-date-picker
             v-model="form.date"
             type="datetime"
+            style="width: 100%; max-width: 360px;"
             placeholder="选择日期时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="想对小小格哥说">
           <el-input
             type="textarea"
+            style="max-width: 360px;"
             :autosize="{ minRows: 4, maxRows: 6}"
             placeholder="对小小格哥说点什么呢。。。"
             v-model="form.msg">
@@ -32,6 +36,7 @@
             :show-file-list="false"
             :on-progress="progressUpload"
             :on-success="successUpload"
+            :on-error="errorUpload"
             action="https://api.daqiongzi.com/common/github/upload">
             <i class="el-icon-upload"></i>
             <div v-if="!progress" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -109,12 +114,21 @@ export default {
     },
     progressUpload (e) {
       console.log(e)
-      this.progress = e.percent
+      this.progress = Math.trunc(e.percent)
     },
     successUpload (res) {
       console.log(res)
       this.form.photo = res.data.content.download_url
       this.progress = 0
+      this.$message({
+        message: '小小格哥谢谢你又给他添加了一张新图片',
+        type: 'success'
+      });
+    },
+    errorUpload (error) {
+      console.log(error)
+      this.progress = 0
+      this.$message.error('好可惜，上传失败了，快去找爸爸来修一下啊！');
     }
   }
 }
@@ -130,6 +144,36 @@ export default {
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;
+    }
+  }
+}
+@media screen and (max-width: 545px) {
+  .xxgg-growth-edit {
+    &-container {
+      margin: 0px;
+      .header {
+        padding: 0 10px;
+        box-sizing: boder-box;
+      }
+      /deep/ .el-form-item {
+        display: flex;
+        flex-direction: column;
+      }
+      /deep/ .el-form-item__content {
+        margin-left: 0 !important;
+      }
+      /deep/ .el-form-item__label {
+        width: 100% !important;
+        text-align: left;
+      }
+      .upload-demo {
+        /deep/ .el-upload {
+          width: 100%;
+        }
+        /deep/ .el-upload-dragger {
+          width: 100%;
+        }
+      }
     }
   }
 }
