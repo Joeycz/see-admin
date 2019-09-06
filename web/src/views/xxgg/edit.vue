@@ -112,9 +112,9 @@ export default {
     goBack() {
       this.$router.push('/xxgg/growth')
     },
-    progressUpload (e) {
-      console.log(e)
-      this.progress = Math.trunc(e.percent)
+    progressUpload (e, file, fileList) {
+      console.log(e, file, fileList)
+      this.progress = Math.trunc(file.percentage)
     },
     successUpload (res) {
       console.log(res)
