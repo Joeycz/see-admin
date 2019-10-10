@@ -153,7 +153,6 @@ export default {
 <style lang="scss" scoped>
 .xxgg-growth {
   &-container {
-    margin: 30px;
     h4 {
       line-height: 1.4;
       color: #333333;

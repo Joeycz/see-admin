@@ -75,6 +75,22 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: '/family',
+    component: Layout,
+    redirect: '/family/plan',
+    name: 'Family',
+    meta: { title: '家庭', icon: 'family' },
+    children: [{
+      path: 'plan',
+      name: 'Plan',
+      component: () => import('@/views/family/plan'),
+      meta: { title: '计划', icon: 'schedule' }
+    }, {
+      path: ''
+    }]
+  },
+
   // {
   //   path: '/example',
   //   component: Layout,

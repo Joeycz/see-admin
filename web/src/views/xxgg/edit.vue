@@ -93,7 +93,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log('submit!');
       updateData(this.form).then((res) => {
         console.log(res)
         if (res.code === 100000) {
@@ -137,7 +136,6 @@ export default {
 <style lang="scss" scoped>
 .xxgg-growth-edit {
   &-container {
-    margin: 30px;
     .photo-box {
       width: 200px;
       height: 200px;

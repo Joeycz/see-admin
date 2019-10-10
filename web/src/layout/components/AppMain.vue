@@ -24,9 +24,16 @@ export default {
   width: 100%;
   position: relative;
   overflow: hidden;
+  padding: 30px;
+  box-sizing: border-box;
 }
 .fixed-header+.app-main {
   padding-top: 50px;
+}
+@media screen and (max-width: 545px) {
+  .app-main {
+    padding: 0;
+  }
 }
 </style>
 
