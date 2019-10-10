@@ -178,17 +178,26 @@
 <style lang="scss" scoped>
 	.family-plan {
 		box-sizing: border-box;
-		padding: 50px 12px 20px;
+		padding: 20px 12px 70px;
 		/deep/ .el-form-item__label {
 			line-height: 1.4;
 		}
 		.header {
 			display: flex;
-			margin-bottom: 10px;
 			font-size: 12px;
 			color: #666666;
 			position: fixed;
-			top: 70px;
+			bottom: 0px;
+			left: 0;
+			width: 100%;
+			height: 50px;
+			background-color: white;
+			align-items: center;
+			justify-content: flex-end;
+			box-sizing: border-box;
+			z-index: 10;
+			padding: 0 12px;
+			border-top: 1px solid #eeeeee;
 			div {
 				cursor: pointer;
 			}
