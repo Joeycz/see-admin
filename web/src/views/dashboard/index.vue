@@ -11,6 +11,8 @@
           </div>
         </div>
       </a>
+      <div class="more-btn" @click="getOnenews" v-if="isLoadmore">加载更多</div>
+      <div class="more-btn" v-else>没有更多了</div>
     </div>
   </div>
 </template>
@@ -25,6 +27,9 @@ export default {
   data () {
     return {
       moment,
+      size: 12,
+      lastId: '',
+      isLoadmore: true,
       onenewsList: []
     }
   },
@@ -38,8 +43,15 @@ export default {
   },
   methods: {
     async getOnenews () {
-      const res = await getOnenews()
-      this.onenewsList = res.data.data
+      const res = await getOnenews({
+        size: this.size,
+        lastId: this.lastId
+      })
+      const l = res.data.data.length
+      this.isLoadmore = this.size === l
+      this.lastId = res.data.data[l - 1]._id
+      
+      this.onenewsList = [...this.onenewsList, ...res.data.data]
       console.log(this.onenewsList)
     }
   }
@@ -54,6 +66,15 @@ export default {
     .section-box {
       display: flex;
       flex-direction: column;
+    }
+    .more-btn {
+      width: 100%;
+      cursor: pointer;
+      flex-shrink: 0;
+      text-align: center;
+      font-size: 12px;
+      color: #666666;
+      padding: 20px 0;
     }
     .news-card {
       display: block;
@@ -72,6 +93,7 @@ export default {
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        background-color: #cccccc;
       }
       .footer {
         padding: 20px 12px;
