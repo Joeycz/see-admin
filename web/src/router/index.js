@@ -91,6 +91,22 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: '/tools',
+    component: Layout,
+    redirect: '/family/pic-composing',
+    name: 'Tools',
+    meta: { title: '工具', icon: 'tools' },
+    children: [{
+      path: 'pic-composing',
+      name: 'PicComposing',
+      component: () => import('@/views/tools/picComposing'),
+      meta: { title: '证件照排版', icon: 'image' }
+    }, {
+      path: ''
+    }]
+  },
+
   // {
   //   path: '/example',
   //   component: Layout,
