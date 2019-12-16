@@ -105,11 +105,11 @@ export default {
           } else {
             this.$router.push('/xxgg/growth');
           }
-          
         } else {
           this.$message.error('哈哈，录入失败，再试一下，还是不行的话就去找爸爸！');
         }
       }).catch((err) => {
+        console.error(err)
         this.$message.error('哈哈，录入失败，再试一下，还是不行的话就去找爸爸！');
       })
     },
