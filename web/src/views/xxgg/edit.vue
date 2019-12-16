@@ -101,6 +101,7 @@ export default {
             type: 'success'
           });
           if (isXXGG()) {
+            console.log(window.xxgg)
             window.xxgg.close()
           } else {
             this.$router.push('/xxgg/growth');
