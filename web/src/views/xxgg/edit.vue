@@ -100,6 +100,8 @@ export default {
             message: '哈哈，录入成功啦，小小格哥又长了！',
             type: 'success'
           });
+          console.log(isXXGG())
+          console.log(window.xxgg)
           if (isXXGG()) {
             console.log(window.xxgg)
             window.xxgg.close()
