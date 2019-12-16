@@ -58,7 +58,7 @@
 <script>
 import { updateData } from '@/api/xxgg'
 import moment from 'moment'
-import { getToken } from '@/utils/auth'
+import { getToken, isXXGG } from '@/utils/auth'
 
 export default {
   name: 'GrowthEdit',
@@ -100,7 +100,12 @@ export default {
             message: '哈哈，录入成功啦，小小格哥又长了！',
             type: 'success'
           });
-          this.$router.push('/xxgg/growth');
+          if (isXXGG()) {
+            window.xxgg.close()
+          } else {
+            this.$router.push('/xxgg/growth');
+          }
+          
         } else {
           this.$message.error('哈哈，录入失败，再试一下，还是不行的话就去找爸爸！');
         }

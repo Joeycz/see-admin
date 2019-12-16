@@ -108,3 +108,8 @@ export function param2Obj(url) {
       '"}'
   )
 }
+
+export function isXXGG() {
+  const ua = window.navigator.userAgent
+  return !!ua.match(/xxgg/)
+}
