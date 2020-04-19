@@ -37,7 +37,7 @@
             :on-progress="progressUpload"
             :on-success="successUpload"
             :on-error="errorUpload"
-            action="https://api.daqiongzi.com/common/github/upload">
+            action="http://ali.daqiongzi.com/common/github/upload">
             <i class="el-icon-upload"></i>
             <div v-if="!progress" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
             <div v-else style="padding: 0 20px;">

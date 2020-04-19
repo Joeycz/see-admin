@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getData(params) {
   return request({
-    url: 'https://api.daqiongzi.com/family/xxgg/growth',
+    url: 'http://ali.daqiongzi.com/family/xxgg/growth',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function getData(params) {
 
 export function updateData(data) {
   return request({
-    url: 'https://api.daqiongzi.com/family/xxgg/growth',
+    url: 'http://ali.daqiongzi.com/family/xxgg/growth',
     method: 'post',
     data
   })
