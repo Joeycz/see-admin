@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: 'http://ali.daqiongzi.com/login',
+    url: 'https://ali.daqiongzi.com/login',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: 'http://ali.daqiongzi.com/users/userInfo',
+    url: 'https://ali.daqiongzi.com/users/userInfo',
     method: 'get'
   })
 }
