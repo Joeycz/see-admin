@@ -3,8 +3,43 @@ import Vue from 'vue'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
+// import {
+//   Breadcrumb,
+//   BreadcrumbItem,
+//   Dropdown,
+//   DropdownMenu,
+//   DropdownItem,
+//   Scrollbar,
+//   Menu,
+//   MenuItem,
+//   Submenu,
+//   Avatar,
+//   Dialog,
+//   Form,
+//   FormItem,
+//   Input,
+//   Select,
+//   Option,
+//   Button,
+//   Col,
+//   DatePicker,
+//   TimePicker,
+//   Switch,
+//   Checkbox,
+//   CheckboxGroup,
+//   RadioGroup,
+//   Radio,
+//   Alert,
+//   Table,
+//   TableColumn,
+//   Tag,
+//   Tree,
+//   Card,
+//   Upload,
+//   Progress
+// } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
+// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
@@ -29,7 +64,9 @@ import '@/permission' // permission control
 // }
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI, { locale })
+Vue.use(ElementUI)
+
 
 Vue.config.productionTip = false
 
