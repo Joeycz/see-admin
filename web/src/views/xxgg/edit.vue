@@ -28,7 +28,7 @@
             v-model="form.msg">
           </el-input>
         </el-form-item>
-        <el-form-item label="拍一张">
+        <!-- <el-form-item label="拍一张">
           <el-upload
             class="upload-demo"
             :headers="uploadImage.headers"
@@ -38,6 +38,25 @@
             :on-success="successUpload"
             :on-error="errorUpload"
             action="https://api.daqiongzi.com/common/github/upload">
+            <i class="el-icon-upload"></i>
+            <div v-if="!progress" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div v-else style="padding: 0 20px;">
+              <el-progress :percentage="progress"></el-progress>
+            </div>
+          </el-upload>
+          <div class="photo-box" v-if="form.photo" :style="{backgroundImage: `url(${form.photo})`}"></div>
+        </el-form-item> -->
+        <el-form-item label="拍一张">
+          <el-upload
+            class="upload-demo"
+            drag
+            :show-file-list="false"
+            :on-progress="progressUpload"
+            :on-success="successUpload"
+            :on-error="errorUpload"
+            :http-request="uploadFile"
+            v-bind="$attrs"
+            action="">
             <i class="el-icon-upload"></i>
             <div v-if="!progress" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
             <div v-else style="padding: 0 20px;">
@@ -60,6 +79,9 @@ import { updateData } from '@/api/xxgg'
 import moment from 'moment'
 import { getToken } from '@/utils/auth'
 import { isXXGG } from '@/utils/index'
+import { getUploadToken } from '@/api/common'
+import * as qiniu from 'qiniu-js'
+import commonConfig from '../../config/common.json'
 
 export default {
   name: 'GrowthEdit',
@@ -76,7 +98,19 @@ export default {
       uploadImage: {
         headers: {}
       },
-      progress: 0
+      progress: 0,
+      token: '',
+      putextra: {
+        fname: '',
+        params: {},
+        mimeType: null
+      },
+      qiniuConfig: {
+        useCdnDomain: true,
+        disableStatisticsReport: false,
+        retryCount: 6,
+        region: qiniu.region.z2
+      }
     }
   },
   mounted() {
@@ -91,8 +125,34 @@ export default {
         Authorization: getToken()
       }
     }
+    this.getToken()
   },
   methods: {
+    async getToken() {
+      const res = await getUploadToken()
+      this.token = res.token
+    },
+    uploadFile(option) {
+      const fileName = this.changeFileName(option.file.name)
+      const observable = qiniu.upload(
+        option.file,
+        fileName,
+        this.token,
+        this.putextra,
+        this.qiniuConfig
+      )
+      observable.subscribe({
+        next: option.onProgress,
+        error: option.onError,
+        complete: option.onSuccess
+      })
+    },
+    // 修改原文件名，给文件名添加一个时间戳
+    changeFileName(filename) {
+      return filename.replace(/.[a-zA-Z0-9]+$/, (match) => {
+        return `-${Date.now()}${match}`
+      })
+    },
     onSubmit() {
       updateData(this.form).then((res) => {
         console.log(res)
@@ -118,12 +178,10 @@ export default {
       this.$router.push('/xxgg/growth')
     },
     progressUpload (e, file, fileList) {
-      console.log(e, file, fileList)
-      this.progress = Math.trunc(file.percentage)
+      this.progress = Math.trunc(e.total.percent)
     },
     successUpload (res) {
-      console.log(res)
-      this.form.photo = res.data.content.download_url
+      this.form.photo = commonConfig.cdnHost + res.key
       this.progress = 0
       this.$message({
         message: '小小格哥谢谢你又给他添加了一张新图片',
