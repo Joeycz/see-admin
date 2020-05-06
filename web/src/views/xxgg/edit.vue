@@ -63,7 +63,7 @@
               <el-progress :percentage="progress"></el-progress>
             </div>
           </el-upload>
-          <div class="photo-box" v-if="form.photo" :style="{backgroundImage: `url(${form.photo})`}"></div>
+          <div class="photo-box" v-if="form.photo" :style="{backgroundImage: `url(${form.photo + '?imageView2/1/w/600'})`}"></div>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">长大啦</el-button>
